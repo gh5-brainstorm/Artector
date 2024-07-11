@@ -1,5 +1,5 @@
 //
-//  ImagePicker.swift
+//  CameraCaptureView.swift
 //  
 //
 //  Created by danny santoso on 7/12/24.
@@ -8,26 +8,27 @@
 import SwiftUI
 import UIKit
 
-struct ImagePicker: UIViewControllerRepresentable {
-    @Binding var selectedImage: UIImage?
-    @Environment(\.presentationMode) private var presentationMode
+struct CameraCaptureView: UIViewControllerRepresentable {
+    @Binding var isShown: Bool
+    @Binding var image: UIImage?
 
-    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        let parent: ImagePicker
+    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+        let parent: CameraCaptureView
 
-        init(parent: ImagePicker) {
+        init(parent: CameraCaptureView) {
             self.parent = parent
         }
 
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let uiImage = info[.originalImage] as? UIImage {
-                parent.selectedImage = uiImage
+                parent.image = uiImage
             }
-            parent.presentationMode.wrappedValue.dismiss()
+
+            parent.isShown = false
         }
 
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-            parent.presentationMode.wrappedValue.dismiss()
+            parent.isShown = false
         }
     }
 
@@ -38,9 +39,11 @@ struct ImagePicker: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
         picker.delegate = context.coordinator
+        picker.sourceType = .camera
         return picker
     }
 
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {
+        // No-op
+    }
 }
-
