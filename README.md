@@ -87,5 +87,8 @@ Contributions are welcome! Please open issues or submit pull requests for any im
 For any inquiries, please contact:
 
 Danny Santoso: danny.sntoso@gmail.com
+Naufal Rachfian Djamhur: naufalrdj@gmail.com 
+Fadela Numah Kadenza: fadelanumah@gmail.com
+Usamah Ibnu Diwan: usamahibnudiwan@gmail.com
 ## Acknowledgements
 This framework supports the Sustainable Development Goals (SDGs) by enhancing economic growth and protecting intellectual property rights in the digital age.
