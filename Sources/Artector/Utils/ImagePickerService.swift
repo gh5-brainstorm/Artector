@@ -11,6 +11,7 @@ import Photos
 
 protocol ImagePickerServiceDelegate: AnyObject {
     func imagePickerService(_: ImagePickerService, didReceiveImage image: UIImage)
+    func imagePickerService(_: ImagePickerService, didClosePicker: Bool)
 }
 
 class ImagePickerService: NSObject {
@@ -123,6 +124,8 @@ extension ImagePickerService: UIImagePickerControllerDelegate, UINavigationContr
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true, completion: {
+            self.delegate?.imagePickerService(self, didClosePicker: true)
+        })
     }
 }

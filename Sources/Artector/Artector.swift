@@ -5,6 +5,7 @@ import UIKit
 
 public protocol ArtectorDelegate: AnyObject {
     func artector(_: Artector, didReceiveImage image: UIImage)
+    func artector(_: Artector, didClosePicker: Bool)
 }
 
 /// A singleton class responsible for handling image picking and similarity checking.
@@ -60,5 +61,9 @@ extension Artector: ImagePickerServiceDelegate {
             guard let self = self else { return }
             self.delegate?.artector(self, didReceiveImage: image)
         }
+    }
+    
+    func imagePickerService(_: ImagePickerService, didClosePicker: Bool) {
+        self.delegate?.artector(self, didClosePicker: didClosePicker)
     }
 }
