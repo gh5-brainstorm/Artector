@@ -9,8 +9,9 @@ public protocol ArtectorDelegate: AnyObject {
     ///
     /// - Parameters:
     ///   - artector: The `Artector` instance.
+    ///   - image: The  image.
     ///   - similarity: The similarity image.
-    func artector(_: Artector, didReceiveSimilarity similarity: SimilarityResponse)
+    func artector(_: Artector, didReceiveImage image: UIImage, didReceiveSimilarity similarity: SimilarityResponse)
     
     /// Called when the image picker is closed.
     ///
@@ -56,7 +57,7 @@ public final class Artector {
         HttpCallService.sharedInstance.uploadImage(url: Endpoints.Posts.upload.url, imageData: data) { [weak self] (statusCode: Int, response: SimilarityResponse?, error: URLError?) in
             guard let self = self else { return }
             if let response {
-                self.delegate?.artector(self, didReceiveSimilarity: response)
+                self.delegate?.artector(self, didReceiveImage: image, didReceiveSimilarity: response)
             } else {
                 self.delegate?.artector(self, didClosePicker: true)
             }
@@ -76,7 +77,7 @@ extension Artector: ImagePickerServiceDelegate {
         HttpCallService.sharedInstance.uploadImage(url: Endpoints.Posts.upload.url, imageData: data) { [weak self] (statusCode: Int, response: SimilarityResponse?, error: URLError?) in
             guard let self = self else { return }
             if let response {
-                self.delegate?.artector(self, didReceiveSimilarity: response)
+                self.delegate?.artector(self, didReceiveImage: image, didReceiveSimilarity: response)
             } else {
                 self.delegate?.artector(self, didClosePicker: true)
             }
