@@ -15,7 +15,7 @@ public final class Artector {
     }
     
     public func showCamera(from viewController: UIViewController) {
-        ImagePickerService.sharedInstance.showImagePicker(from: viewController, sourceType: .photoLibrary)
+        ImagePickerService.sharedInstance.showImagePicker(from: viewController, sourceType: .camera)
     }
 }
 
