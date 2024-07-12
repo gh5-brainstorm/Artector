@@ -23,9 +23,16 @@ public final class Artector {
     
     public func showCamera(from viewController: UIViewController) {
 //        ImagePickerService.shared.checkCameraPermission(from: viewController)
-        HttpCallService.sharedInstance.request(url: "https://7f0e-111-67-81-27.ngrok-free.app/images", method: "GET", { (statusCode: Int, response: [ImageResponse]?, error: URLError?) in
-            print("LOG DATA \(response)")
-        })
+        HttpCallService.sharedInstance.request(url: "https://7f0e-111-67-81-27.ngrok-free.app/images", method: "GET") { (statusCode: Int, response: [ImageResponse]?, error: URLError?) in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            } else {
+                print("Status Code: \(statusCode)")
+                if let response = response {
+                    print("Response: \(response)")
+                }
+            }
+        }
     }
 }
 

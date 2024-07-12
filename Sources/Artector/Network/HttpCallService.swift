@@ -93,7 +93,8 @@ final class HttpCallService {
         }
         task.resume()
     }
-    
+}
+extension HttpCallService {
     /// Uploads an image.
     ///
     /// - Parameters:
