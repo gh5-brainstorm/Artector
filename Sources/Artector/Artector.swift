@@ -11,7 +11,7 @@ public protocol ArtectorDelegate: AnyObject {
     ///   - artector: The `Artector` instance.
     ///   - image: The  image.
     ///   - similarity: The similarity image.
-    func artector(_: Artector, didReceiveImage image: UIImage, didReceiveSimilarity similarity: SimilarityResponse)
+    func artector(_: Artector, didReceiveImage image: UIImage, didReceiveSimilarity similarity: [SimilarityResponse])
     
     /// Called when the image picker is closed.
     ///
@@ -54,7 +54,7 @@ public final class Artector {
     /// - Parameter image: The image to check for similarity.
     public func checkSimilarrity(image: UIImage) {
         guard let data = image.jpegData(compressionQuality: 1) else { return }
-        HttpCallService.sharedInstance.uploadImage(url: Endpoints.Posts.upload.url, imageData: data) { [weak self] (statusCode: Int, response: SimilarityResponse?, error: URLError?) in
+        HttpCallService.sharedInstance.uploadImage(url: Endpoints.Posts.upload.url, imageData: data) { [weak self] (statusCode: Int, response: [SimilarityResponse]?, error: URLError?) in
             guard let self = self else { return }
             if let response {
                 self.delegate?.artector(self, didReceiveImage: image, didReceiveSimilarity: response)
@@ -74,7 +74,7 @@ extension Artector: ImagePickerServiceDelegate {
     ///   - image: The image that was received.
     func imagePickerService(_: ImagePickerService, didReceiveImage image: UIImage) {
         guard let data = image.jpegData(compressionQuality: 1) else { return }
-        HttpCallService.sharedInstance.uploadImage(url: Endpoints.Posts.upload.url, imageData: data) { [weak self] (statusCode: Int, response: SimilarityResponse?, error: URLError?) in
+        HttpCallService.sharedInstance.uploadImage(url: Endpoints.Posts.upload.url, imageData: data) { [weak self] (statusCode: Int, response: [SimilarityResponse]?, error: URLError?) in
             guard let self = self else { return }
             if let response {
                 self.delegate?.artector(self, didReceiveImage: image, didReceiveSimilarity: response)
