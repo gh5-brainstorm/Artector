@@ -3,6 +3,8 @@
 
 import Foundation
 import UIKit
+import AVFoundation
+import Photos
 
 public final class Artector {
     
@@ -11,11 +13,20 @@ public final class Artector {
     private init() {}
 
     public func showGalleryPicker(from viewController: UIViewController) {
-        ImagePickerService.sharedInstance.showImagePicker(from: viewController, sourceType: .photoLibrary)
+        let photos = PHPhotoLibrary.authorizationStatus()
+        if photos == .notDetermined {
+            PHPhotoLibrary.requestAuthorization({status in
+                guard status == .authorized else { return }
+                ImagePickerService.sharedInstance.showImagePicker(from: viewController, sourceType: .photoLibrary)
+            })
+        }
     }
     
     public func showCamera(from viewController: UIViewController) {
-        ImagePickerService.sharedInstance.showImagePicker(from: viewController, sourceType: .camera)
+        AVCaptureDevice.requestAccess(for: AVMediaType.video) { response in
+            guard response else { return }
+            ImagePickerService.sharedInstance.showImagePicker(from: viewController, sourceType: .camera)
+        }
     }
 }
 
