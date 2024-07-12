@@ -26,7 +26,7 @@ public final class Artector {
 
 extension Artector: ImagePickerServiceDelegate {
     func imagePickerService(_: ImagePickerService, didReceiveImage image: UIImage) {
-        guard let data = image.pngData() else { return }
+        guard let data = image.jpegData(compressionQuality: 1) else { return }
         HttpCallService.sharedInstance.uploadImage(url: "https://7f0e-111-67-81-27.ngrok-free.app/upload", imageData: data) { (statusCode: Int, response: SuccessResponse?, error: URLError?) in
             print("LOG DATA >> \(response)")
         }
