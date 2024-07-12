@@ -6,7 +6,7 @@
 //
 
 struct Route {
-    static let baseUrl = "https://8b31-114-124-142-204.ngrok-free.app/"
+    static let baseUrl = "https://8b31-114-124-142-204.ngrok-free.app"
 }
 
 protocol Endpoint {
