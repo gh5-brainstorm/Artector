@@ -17,10 +17,19 @@ enum Endpoints {
     enum Posts: Endpoint {
         case upload
         
-        /// The URL for the single sign-on endpoint.
         public var url: String {
             switch self {
             case .upload: return "\(Route.baseUrl)/upload"
+            }
+        }
+    }
+    
+    enum Gets: Endpoint {
+        case images
+        
+        public var url: String {
+            switch self {
+            case .images: return "\(Route.baseUrl)/images"
             }
         }
     }

@@ -117,8 +117,9 @@ extension ImagePickerService: UIImagePickerControllerDelegate, UINavigationContr
             picker.dismiss(animated: true, completion: nil)
             return
         }
-        picker.dismiss(animated: true, completion: nil)
-        delegate?.imagePickerService(self, didReceiveImage: pickedImage)
+        picker.dismiss(animated: true, completion: {
+            self.delegate?.imagePickerService(self, didReceiveImage: pickedImage)
+        })
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
