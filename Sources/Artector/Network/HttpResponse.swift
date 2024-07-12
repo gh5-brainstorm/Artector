@@ -25,20 +25,20 @@ struct HttpResponse<T: Decodable>: Decodable {
 }
 
 public struct SimilarityResponse: Decodable {
-    let imageName: String
-    let similarImage: [ImageResponse]
+    public let imageName: String
+    public let similarImage: [ImageResponse]
     
-    private enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case imageName = "image_name"
         case similarImage = "similar_image"
     }
 }
 
 public struct ImageResponse: Decodable {
-    let url: String
-    let similarityScore: Float
+    public let url: String
+    public let similarityScore: Float
     
-    private enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case url
         case similarityScore = "similarity_score"
     }
