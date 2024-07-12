@@ -102,7 +102,7 @@ final class HttpCallService {
     ///   - callback: A closure to be called upon completion of the request, containing the status code and response data.
     func uploadImage<T: Decodable>(
         url: String,
-        imageData: Data,
+        filePath: String,
         _ callback: @escaping (Int, T?, URLError?) -> Void
     ) {
         guard let url = URL(string: url) else {
@@ -118,19 +118,30 @@ final class HttpCallService {
 
         var body = Data()
         
-        // Append boundary and headers
-        if let boundaryData = "--\(boundary)\r\n".data(using: .utf8),
-           let dispositionData = "Content-Disposition: form-data; name=\"file\"; filename=\"sample.jpg\"\r\n".data(using: .utf8),
-           let contentTypeData = "Content-Type: image/jpeg\r\n\r\n".data(using: .utf8),
-           let boundaryEndData = "\r\n--\(boundary)--\r\n".data(using: .utf8) {
+        // Add the file data to the request body
+        do {
+            let fileData = try Data(contentsOf: URL(fileURLWithPath: filePath))
+            let boundaryPrefix = "--\(boundary)\r\n"
+            let disposition = "Content-Disposition: form-data; name=\"files\"; filename=\"\(filePath.lastPathComponent)\"\r\n"
+            let contentType = "Content-Type: image/jpeg\r\n\r\n"
+            let boundarySuffix = "\r\n--\(boundary)--\r\n"
             
-            body.append(boundaryData)
-            body.append(dispositionData)
-            body.append(contentTypeData)
-            body.append(imageData)
-            body.append(boundaryEndData)
-        } else {
-            callback(500, nil, .customError("Failed to create multipart data"))
+            if let boundaryPrefixData = boundaryPrefix.data(using: .utf8),
+               let dispositionData = disposition.data(using: .utf8),
+               let contentTypeData = contentType.data(using: .utf8),
+               let boundarySuffixData = boundarySuffix.data(using: .utf8) {
+                
+                body.append(boundaryPrefixData)
+                body.append(dispositionData)
+                body.append(contentTypeData)
+                body.append(fileData)
+                body.append(boundarySuffixData)
+            } else {
+                callback(500, nil, .customError("Failed to create multipart data"))
+                return
+            }
+        } catch {
+            callback(500, nil, .customError("Failed to read file data: \(error.localizedDescription)"))
             return
         }
 
@@ -155,5 +166,11 @@ final class HttpCallService {
             }
         }
         task.resume()
+    }
+}
+
+extension String {
+    var lastPathComponent: String {
+        return (self as NSString).lastPathComponent
     }
 }
