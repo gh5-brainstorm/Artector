@@ -4,7 +4,7 @@
 import UIKit
 
 public protocol ArtectorDelegate: AnyObject {
-    func artector(_: Artector, didReceiveImage: UIImage)
+    func artector(_: Artector, didReceiveImage image: UIImage)
 }
 
 public final class Artector {

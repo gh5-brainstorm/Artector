@@ -20,7 +20,7 @@ enum Endpoints {
         /// The URL for the single sign-on endpoint.
         public var url: String {
             switch self {
-            case .upload: return "\(API.baseUrl)/upload"
+            case .upload: return "\(Route.baseUrl)/upload"
             }
         }
     }
