@@ -120,7 +120,7 @@ final class HttpCallService {
         
         // Append boundary and headers
         if let boundaryData = "--\(boundary)\r\n".data(using: .utf8),
-           let dispositionData = "Content-Disposition: form-data; name=\"file\"; filename=\"image.jpg\"\r\n".data(using: .utf8),
+           let dispositionData = "Content-Disposition: form-data; name=\"file\"; filename=\"sample.jpg\"\r\n".data(using: .utf8),
            let contentTypeData = "Content-Type: image/jpeg\r\n\r\n".data(using: .utf8),
            let boundaryEndData = "\r\n--\(boundary)--\r\n".data(using: .utf8) {
             
