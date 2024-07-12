@@ -5,7 +5,7 @@
 //  Created by danny santoso on 7/12/24.
 //
 
-import Foundation
+import UIKit
 
 struct HttpResponse<T: Decodable>: Decodable {
     
@@ -21,5 +21,25 @@ struct HttpResponse<T: Decodable>: Decodable {
     /// Private enum specifying the coding keys for decoding.
     private enum CodingKeys: String, CodingKey {
         case statusCode, message, data
+    }
+}
+
+struct SimilarityResponse: Decodable {
+    let imageName: String
+    let similarImage: [ImageResponse]
+    
+    private enum CodingKeys: String, CodingKey {
+        case imageName = "image_name"
+        case similarImage = "similar_image"
+    }
+}
+
+struct ImageResponse: Decodable {
+    let url: String
+    let similarityScore: Float
+    
+    private enum CodingKeys: String, CodingKey {
+        case url
+        case similarityScore = "similarity_score"
     }
 }
