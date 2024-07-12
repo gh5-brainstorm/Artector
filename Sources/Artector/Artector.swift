@@ -6,7 +6,7 @@ import UIKit
 
 public final class Artector {
     
-    static let shared = Artector()
+    public static let shared = Artector()
     
     private init() {}
 
