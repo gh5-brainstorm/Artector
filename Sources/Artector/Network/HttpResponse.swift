@@ -5,8 +5,6 @@
 //  Created by danny santoso on 7/12/24.
 //
 
-import Foundation
-
 struct HttpResponse<T: Decodable>: Decodable {
     
     /// The HTTP status code of the response.
