@@ -24,12 +24,9 @@ struct HttpResponse<T: Decodable>: Decodable {
     }
 }
 
-struct SuccessResponse: Decodable {
-    let isSuccess: Bool?
-    
-    private enum CodingKeys: String, CodingKey {
-        case isSuccess = "is_success"
-    }
+struct SimilarityResponse: Decodable {
+    let simillarity: Float
+    let images: [ImageResponse]
 }
 
 struct ImageResponse: Decodable {

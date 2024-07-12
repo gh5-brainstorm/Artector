@@ -3,8 +3,20 @@
 
 import UIKit
 
+/// Protocol that defines delegate methods for receiving image and handling picker closure events.
 public protocol ArtectorDelegate: AnyObject {
+    /// Called when an image is received.
+    ///
+    /// - Parameters:
+    ///   - artector: The `Artector` instance.
+    ///   - image: The received image.
     func artector(_: Artector, didReceiveImage image: UIImage)
+    
+    /// Called when the image picker is closed.
+    ///
+    /// - Parameters:
+    ///   - artector: The `Artector` instance.
+    ///   - didClosePicker: A boolean indicating if the picker was closed.
     func artector(_: Artector, didClosePicker: Bool)
 }
 
@@ -41,7 +53,7 @@ public final class Artector {
     /// - Parameter image: The image to check for similarity.
     public func checkSimilarrity(image: UIImage) {
         guard let data = image.jpegData(compressionQuality: 1) else { return }
-        HttpCallService.sharedInstance.uploadImage(url: Endpoints.Posts.upload.url, imageData: data) { [weak self] (statusCode: Int, response: SuccessResponse?, error: URLError?) in
+        HttpCallService.sharedInstance.uploadImage(url: Endpoints.Posts.upload.url, imageData: data) { [weak self] (statusCode: Int, response: SimilarityResponse?, error: URLError?) in
             guard let self = self else { return }
             self.delegate?.artector(self, didReceiveImage: image)
         }
@@ -57,12 +69,16 @@ extension Artector: ImagePickerServiceDelegate {
     ///   - image: The image that was received.
     func imagePickerService(_: ImagePickerService, didReceiveImage image: UIImage) {
         guard let data = image.jpegData(compressionQuality: 1) else { return }
-        HttpCallService.sharedInstance.uploadImage(url: Endpoints.Posts.upload.url, imageData: data) { [weak self] (statusCode: Int, response: SuccessResponse?, error: URLError?) in
+        HttpCallService.sharedInstance.uploadImage(url: Endpoints.Posts.upload.url, imageData: data) { [weak self] (statusCode: Int, response: SimilarityResponse?, error: URLError?) in
             guard let self = self else { return }
             self.delegate?.artector(self, didReceiveImage: image)
         }
     }
     
+    /// Called when the image picker service closes the picker.
+    ///
+    /// - Parameter service: The image picker service instance.
+    /// - Parameter didClosePicker: A boolean indicating if the picker was closed.
     func imagePickerService(_: ImagePickerService, didClosePicker: Bool) {
         self.delegate?.artector(self, didClosePicker: didClosePicker)
     }

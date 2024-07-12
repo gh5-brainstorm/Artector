@@ -9,19 +9,38 @@ import UIKit
 import AVFoundation
 import Photos
 
+/// Protocol that defines delegate methods for receiving an image and handling picker closure events.
 protocol ImagePickerServiceDelegate: AnyObject {
+    /// Called when the image picker service receives an image.
+    ///
+    /// - Parameters:
+    ///   - service: The image picker service instance.
+    ///   - image: The received image.
     func imagePickerService(_: ImagePickerService, didReceiveImage image: UIImage)
+    
+    /// Called when the image picker service closes the picker.
+    ///
+    /// - Parameters:
+    ///   - service: The image picker service instance.
+    ///   - didClosePicker: A boolean indicating if the picker was closed.
     func imagePickerService(_: ImagePickerService, didClosePicker: Bool)
 }
 
+/// A service class responsible for handling image picking from the photo library or camera.
 class ImagePickerService: NSObject {
     
+    /// The shared singleton instance of `ImagePickerService`.
     static let shared = ImagePickerService()
     
+    /// The image picker controller.
     private var imagePicker: UIImagePickerController?
     
+    /// A weak reference to the delegate that conforms to `ImagePickerServiceDelegate`.
     weak var delegate: ImagePickerServiceDelegate?
 
+    /// Checks the photo library permission and presents the image picker if authorized.
+    ///
+    /// - Parameter viewController: The view controller from which to present the gallery picker.
     func checkPhotoLibraryPermission(from viewController: UIViewController) {
         let photosAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
         
@@ -48,6 +67,9 @@ class ImagePickerService: NSObject {
         }
     }
     
+    /// Checks the camera permission and presents the image picker if authorized.
+    ///
+    /// - Parameter viewController: The view controller from which to present the camera picker.
     func checkCameraPermission(from viewController: UIViewController) {
         let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
         
@@ -79,6 +101,11 @@ class ImagePickerService: NSObject {
         }
     }
     
+    /// Presents the image picker with the specified source type.
+    ///
+    /// - Parameters:
+    ///   - viewController: The view controller from which to present the image picker.
+    ///   - sourceType: The source type for the image picker (e.g., photo library, camera).
     private func showImagePicker(from viewController: UIViewController, sourceType: UIImagePickerController.SourceType) {
         imagePicker = UIImagePickerController()
         imagePicker?.delegate = self
@@ -91,6 +118,9 @@ class ImagePickerService: NSObject {
         }
     }
     
+    /// Shows an alert indicating that access to the photo library is denied.
+    ///
+    /// - Parameter viewController: The view controller from which to present the alert.
     private func showPhotoLibraryAccessDeniedAlert(from viewController: UIViewController) {
         let alert = UIAlertController(
             title: "Photo Library Access Denied",
@@ -101,6 +131,9 @@ class ImagePickerService: NSObject {
         viewController.present(alert, animated: true)
     }
     
+    /// Shows an alert indicating that access to the camera is denied.
+    ///
+    /// - Parameter viewController: The view controller from which to present the alert.
     private func showCameraAccessDeniedAlert(from viewController: UIViewController) {
         let alert = UIAlertController(
             title: "Camera Access Denied",
@@ -113,6 +146,11 @@ class ImagePickerService: NSObject {
 }
 
 extension ImagePickerService: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    /// Called when the user finishes picking media.
+    ///
+    /// - Parameters:
+    ///   - picker: The image picker controller.
+    ///   - info: A dictionary containing the media information.
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let pickedImage = info[.originalImage] as? UIImage else {
             picker.dismiss(animated: true, completion: nil)
@@ -123,6 +161,9 @@ extension ImagePickerService: UIImagePickerControllerDelegate, UINavigationContr
         })
     }
 
+    /// Called when the user cancels the image picker.
+    ///
+    /// - Parameter picker: The image picker controller.
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: {
             self.delegate?.imagePickerService(self, didClosePicker: true)
