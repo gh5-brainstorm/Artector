@@ -11,6 +11,8 @@ public final class Artector {
     
     public static let shared = Artector()
     
+    weak var delegate: ArtectorDelegate?
+
     private init() {
         ImagePickerService.shared.delegate = self
     }
@@ -27,8 +29,9 @@ public final class Artector {
 extension Artector: ImagePickerServiceDelegate {
     func imagePickerService(_: ImagePickerService, didReceiveImage image: UIImage) {
         guard let data = image.jpegData(compressionQuality: 1) else { return }
-        HttpCallService.sharedInstance.uploadImage(url: "https://7f0e-111-67-81-27.ngrok-free.app/upload", imageData: data) { (statusCode: Int, response: SuccessResponse?, error: URLError?) in
-            print("LOG DATA >> \(response)")
+        HttpCallService.sharedInstance.uploadImage(url: Endpoints.Posts.upload.url, imageData: data) { [weak self] (statusCode: Int, response: SuccessResponse?, error: URLError?) in
+            guard let self else { return }
+            self.delegate?.artector(self, didReceiveImage: image)
         }
     }
 }

@@ -5,6 +5,8 @@
 //  Created by danny santoso on 7/12/24.
 //
 
+import UIKit
+
 struct HttpResponse<T: Decodable>: Decodable {
     
     /// The HTTP status code of the response.
@@ -28,4 +30,9 @@ struct SuccessResponse: Decodable {
     private enum CodingKeys: String, CodingKey {
         case isSuccess = "is_success"
     }
+}
+
+struct SimilarityModel {
+    let image: UIImage
+    let percentage: String
 }
