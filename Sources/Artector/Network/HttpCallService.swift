@@ -99,12 +99,10 @@ final class HttpCallService {
     /// - Parameters:
     ///   - url: The URL for the request.
     ///   - imageData: The image data to be uploaded.
-    ///   - withAuthorization: A flag indicating whether authorization should be included in the request headers. Defaults to `true`.
     ///   - callback: A closure to be called upon completion of the request, containing the status code and response data.
     func uploadImage<T: Decodable>(
         url: String,
         imageData: Data,
-        withAuthorization: Bool? = true,
         _ callback: @escaping (Int, T?, URLError?) -> Void
     ) {
         guard let url = URL(string: url) else {

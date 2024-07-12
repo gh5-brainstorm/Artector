@@ -21,3 +21,11 @@ struct HttpResponse<T: Decodable>: Decodable {
         case statusCode, message, data
     }
 }
+
+struct SuccessResponse: Decodable {
+    let isSuccess: Bool?
+    
+    private enum CodingKeys: String, CodingKey {
+        case isSuccess = "is_success"
+    }
+}

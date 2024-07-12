@@ -9,12 +9,18 @@ import UIKit
 import AVFoundation
 import Photos
 
+protocol ImagePickerServiceDelegate: AnyObject {
+    func imagePickerService(_: ImagePickerService, didReceiveImage image: UIImage)
+}
+
 class ImagePickerService: NSObject {
     
     static let shared = ImagePickerService()
     
     private var imagePicker: UIImagePickerController?
     
+    weak var delegate: ImagePickerServiceDelegate?
+
     func checkPhotoLibraryPermission(from viewController: UIViewController) {
         let photosAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
         
@@ -111,7 +117,7 @@ extension ImagePickerService: UIImagePickerControllerDelegate, UINavigationContr
             picker.dismiss(animated: true, completion: nil)
             return
         }
-        // handle
+        delegate?.imagePickerService(self, didReceiveImage: pickedImage)
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
