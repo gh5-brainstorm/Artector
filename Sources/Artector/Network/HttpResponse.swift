@@ -31,8 +31,3 @@ struct SuccessResponse: Decodable {
         case isSuccess = "is_success"
     }
 }
-
-struct SimilarityModel {
-    let image: UIImage
-    let percentage: String
-}

@@ -3,7 +3,7 @@
 
 import UIKit
 
-protocol ArtectorDelegate: AnyObject {
+public protocol ArtectorDelegate: AnyObject {
     func artector(_: Artector, didReceiveImage: UIImage)
 }
 
@@ -11,7 +11,7 @@ public final class Artector {
     
     public static let shared = Artector()
     
-    weak var delegate: ArtectorDelegate?
+    public weak var delegate: ArtectorDelegate?
 
     private init() {
         ImagePickerService.shared.delegate = self
