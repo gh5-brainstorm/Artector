@@ -24,7 +24,7 @@ struct HttpResponse<T: Decodable>: Decodable {
     }
 }
 
-struct SimilarityResponse: Decodable {
+public struct SimilarityResponse: Decodable {
     let imageName: String
     let similarImage: [ImageResponse]
     
@@ -34,7 +34,7 @@ struct SimilarityResponse: Decodable {
     }
 }
 
-struct ImageResponse: Decodable {
+public struct ImageResponse: Decodable {
     let url: String
     let similarityScore: Float
     
