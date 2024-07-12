@@ -85,8 +85,9 @@ final class HttpCallService {
             }
 
             do {
-                let decodedResponse = try JSONDecoder().decode(HttpResponse<T>.self, from: data)
-                callback(httpResponse.statusCode, decodedResponse.data, nil)
+                print("LOG DATA >> \(data)")
+                let decodedResponse = try JSONDecoder().decode(T.self, from: data)
+                callback(httpResponse.statusCode, decodedResponse, nil)
             } catch {
                 callback(httpResponse.statusCode, nil, .customError(error.localizedDescription))
             }
@@ -148,8 +149,8 @@ final class HttpCallService {
             }
 
             do {
-                let decodedResponse = try JSONDecoder().decode(HttpResponse<T>.self, from: data)
-                callback(httpResponse.statusCode, decodedResponse.data, nil)
+                let decodedResponse = try JSONDecoder().decode(T.self, from: data)
+                callback(httpResponse.statusCode, decodedResponse, nil)
             } catch {
                 callback(httpResponse.statusCode, nil, .customError("Failed to decode response: \(error.localizedDescription)"))
             }
